@@ -22,9 +22,9 @@ class UserRepository{
 
 //    public static UserRepository instance = null;
 //
-    public UserRepository()
+    public UserRepository(User[] users)
     {
-        users = new User[100];
+        this.users = users ;
 //
 //        if(instance == null)
 //            instance = new UserRepository();
@@ -75,12 +75,17 @@ class UserRepository{
 }
 
 class UserService{
+
+    private UserRepository userRepository;
+
+    public UserService(UserRepository userRepository){
+        this.userRepository = userRepository;
+    }
     public int signup(String username, String password) {
         // 성공: 200;
         // 실패: 400; => 중복 아이디
         // 공간 부족: 500;
 
-        UserRepository userRepository = new UserRepository();
         User  FoundUser = userRepository.FindUsername(username);
         if(FoundUser != null)
             return 400;
@@ -96,9 +101,14 @@ class UserService{
 }
 
 class UserController{
+    private UserService userService;
+
+    public UserController(UserService userService){
+        this.userService = userService;
+    }
     public void postMapping(String username, String password) {
-        UserService userService = new UserService();
         int status = userService.signup(username, password);
+//        userService->
         switch (status) {
             case 200:
                 System.out.println("회원 등록 성공");
@@ -113,9 +123,9 @@ class UserController{
     }
 }
 
+
 public class Main2 {
     public static void main(String[] args) {
-
         String[] usernames = new String[500];
         String[] passwords = new String[500];
 
@@ -134,7 +144,11 @@ public class Main2 {
         System.out.println(Arrays.toString(usernames));
         System.out.println(Arrays.toString(passwords));
 
-        UserController userController = new UserController();
+        User[] users = new User[100];
+        UserRepository repository = new UserRepository(users);
+        UserService service = new UserService(repository);
+
+        UserController userController = new UserController(service);
         for(int i =0; i < 500; i++) {
             userController.postMapping(usernames[i], passwords[i]);
         }
