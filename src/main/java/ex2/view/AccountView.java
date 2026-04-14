@@ -1,8 +1,11 @@
 package ex2.view;
 
+import ex2.Controller.Controller;
+import ex2.dto.ResponseDto;
 import ex2.router.RouterPath;
 import ex2.router.Routers;
 import ex2.util.Input;
+import ex3.router.Router;
 
 public class AccountView implements View{
     @Override
@@ -10,9 +13,13 @@ public class AccountView implements View{
         accountMenu();
         System.out.print("입력 :");
         String cmd = Input.nextLine();
-        if("b".equals(cmd)){
-            RouterPath.current = Routers.HOME.name();
+        ResponseDto<?> responseDto = Controller.accountController((cmd));
+        if(responseDto.getStatus() == 100){
+            RouterPath.current = Router.HOME.name();
         }
+//        if("b".equals(cmd)){
+//            RouterPath.current = Routers.HOME.name();
+//        }
     }
 
     private void accountMenu(){
