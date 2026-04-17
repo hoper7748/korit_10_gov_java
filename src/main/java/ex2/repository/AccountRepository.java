@@ -14,5 +14,5 @@ public interface AccountRepository {
 
     public Optional<ex2.entity.Account> findByAccountNo(String accountNo);
 
-    public List<Optional<ex2.entity.Account>> findAll();
+    public List<Account> findAll();
 }

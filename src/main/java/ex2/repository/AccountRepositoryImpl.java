@@ -41,7 +41,7 @@ public enum AccountRepositoryImpl implements AccountRepository{
     }
 
     @Override
-    public List<Optional<Account>> findAll() {
-        return accountList  .stream().map(account -> Optional.of(account)).toList();
+    public List<Account> findAll() {
+        return accountList;
     }
 }
